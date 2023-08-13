@@ -1,20 +1,23 @@
-{ buildGoModule
-, fetchFromGitHub
-, lib
-, makeWrapper
-, xdg-utils
-}:
-buildGoModule rec {
+{ buildGoModule, fetchFromGitHub, lib, makeWrapper, xdg-utils }:
+
+let
   pname = "granted";
-  version = "0.4.0";
+  version = "0.14.2";
+  owner = "common-fate";
+in
+buildGoModule rec {
+  inherit pname version;
 
   src = fetchFromGitHub {
     owner = "common-fate";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-5NEwd1SN+SwKMhbcgVBYbYsF1+H+xWx5zLl91eD9Ig8=";
+    sha256 = "sha256-BxtEMIWJaZaCtd5auGRq+F3VkRTZXGBa6GdLWgvC+ZE=";
   };
-  vendorSha256 = "sha256-jO26atvv/PXvmx6wxpYaBtQREIi3b9Ne31RCG1b2b00=";
+
+  vendorSha256 = "sha256-tPWdzPJyjxcjDM5UgIeQek60Df/7dSaKedZF04tfu6Q=";
+
+  ldflags = ''-X "github.com/${owner}/${pname}/internal/build.Version=${version}"'';
 
   nativeBuildInputs = [ makeWrapper ];
 
